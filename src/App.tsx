@@ -11,13 +11,13 @@ function App() {
   const [input, setInput] = useState<string>("");
   const [priority, setPriority] = useState<Priority>("Moyenne");
   
-  // Permet de sauvergarder dans le local Storage mes requets
+  // Permet de sauvegarder mes requêtes dans le localStorage.
   const savedTodos = localStorage.getItem("todos")
   const initialTodos = savedTodos ? JSON.parse(savedTodos) : []
   // Vérifie d'abord si une todo est dans le LocalStorage du navigateur
   const [todos , setTodos] = useState<Todo[]>(initialTodos)
 
-  // Permet de mettre à jour automatiquement todos et de créer un tableau todo dans le localStorage 
+  //Permet de mettre à jour automatiquement les todos et de créer un tableau de todos dans le localStorage.
   useEffect(()=> {
     localStorage.setItem("todos", JSON.stringify(todos))
   }, [todos])
