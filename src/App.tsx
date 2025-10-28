@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import TodoItem from "./TodoItem";
 
 type Priority = "Urgente" | "Moyenne" | "Basse";
 type Todo = {
@@ -42,13 +43,21 @@ function App() {
     console.log(newTodos);
   }
 
+  // Filtrage des tâches en fonction de la priorité sélectionnée
   let filteredTodos: Todo[] = [];
 
   if (filter === "Tous") {
+    // Retourne toutes les tâches si le filtre est défini sur "Tous"
     filteredTodos = todos;
   } else {
+    // Retourne uniquement les tâches ayant la priorité correspondante au filtre sélectionné
     filteredTodos = todos.filter((todo) => todo.priority === filter);
   }
+
+  const urgentCount = todos.filter((t) => t.priority === "Urgente").length;
+  const mediumCount = todos.filter((t) => t.priority === "Moyenne").length;
+  const lowCount = todos.filter((t) => t.priority === "Basse").length;
+  const totalCount = todos.length;
 
   return (
     <div className=" flex justify-center">
@@ -79,25 +88,55 @@ function App() {
 
         <div className="space-y-2 flex-1 h-fit">
           <div className="flex flex-wrap gap-4">
+            {/** Bouton pour filtrer les taches */}
             <button
               className={`btn btn-soft ${
                 filter === "Tous" ? "btn-primary" : ""
               }`}
               onClick={() => setFilter("Tous")}
             >
-              Tous
+              Tous({totalCount})
+            </button>
+
+            <button
+              className={`btn btn-soft ${
+                filter === "Urgente" ? "btn-primary" : ""
+              }`}
+              onClick={() => setFilter("Urgente")}
+            >
+              Urgente({urgentCount})
+            </button>
+
+            <button
+              className={`btn btn-soft ${
+                filter === "Moyenne" ? "btn-primary" : ""
+              }`}
+              onClick={() => setFilter("Moyenne")}
+            >
+              Moyenne({mediumCount})
+            </button>
+
+            <button
+              className={`btn btn-soft ${
+                filter === "Basse" ? "btn-primary" : ""
+              }`}
+              onClick={() => setFilter("Basse")}
+            >
+              Basse({lowCount})
             </button>
           </div>
 
-          {filteredTodos.length > 0 ? 
-          <ul className="divide-y divide-primary/20">
-            {filteredTodos.map((todo) =>(
-              <li>
-                {todo.text}
-              </li>
-            ))}
-          </ul> : 
-          <div>test1</div>}
+          {filteredTodos.length > 0 ? (
+            <ul className="divide-y divide-primary/20">
+              {filteredTodos.map((todo) => (
+                <li key={todo.id}>
+                  <TodoItem todo={todo} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>test1</div>
+          )}
         </div>
       </div>
     </div>
